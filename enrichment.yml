@@ -1,0 +1,14 @@
+name: BacDrop
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - bwa=0.7.17
+  - samtools=1.15.1
+  - subread=2.0.6
+  - fastp=0.19.6
+  - python=3.9.9
+  - umi_tools=1.1.4
+  - sra-tools=3.2.1
+
