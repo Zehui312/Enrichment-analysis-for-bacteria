@@ -1,0 +1,6 @@
+SRR15174659	untreated
+SRR15174661	untreated
+SRR15174663	untreated
+SRR15174664	meropenem
+SRR15174665	meropenem
+SRR15174666	meropenem
