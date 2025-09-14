@@ -1,4 +1,4 @@
-name: BacDrop
+name: BacEnrich
 channels:
   - conda-forge
   - bioconda
@@ -8,7 +8,6 @@ dependencies:
   - samtools=1.15.1
   - subread=2.0.6
   - fastp=0.19.6
-  - python=3.9.9
-  - umi_tools=1.1.4
   - sra-tools=3.2.1
+  - eggnog-mapper=2.1.12
 
