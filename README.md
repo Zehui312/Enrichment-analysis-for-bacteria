@@ -4,13 +4,23 @@ This pipeline is a workflow for Bacteria Bulk RNA-seq enrichment analysis.
 # Workflow
 
 # Requirements
+## 1. Installing software using conda
 You can use conda to install required software/package.
 ```
 conda install mamba -c conda forge
 mamba env create -f enrichment.yml
 conda activate BacEnrich
 ```
-
+## 2. Download example fastq files
+Here, we use 6 sequencing data as example, they are untreated and meropenem-treated and replicated 3 time.
+```
+cat ${meta_data} | while read line; do
+    sample_name=$(echo $line | cut -f2 -d " ")
+    srr_id=$(echo $line | cut -f1 -d " ")
+    echo "fastq-dump --gzip --split-3 -O ${srr_id} -A ${srr_id}"
+done > download_data.sh
+sh download_data.sh
+```
 # Pipeline description
 Here you can find a detail steps description of workflow.
 ## Step 1: Functional annotation of reference
@@ -40,6 +50,7 @@ emapper.py -i ${faa_file} -o Ma_L5H --tax_scope Bacteria --excel
 ```
 If you want set other parameter, you can refer [eggNOG-mapper wiki](https://github.com/eggnogdb/eggnog-mapper/wiki/eggNOG-mapper-v2.1.5-to-v2.1.13#user-content-Software_Requirements).
 ## Step 2: Raw reads processing
+```./script/mapping_bulk_paired.sh``` can achieve Raw data QC and Alignment. You can just simplely run below script
 # bash
 ```
 gff_file=/research/groups/ma1grp/home/zyu/my_github/Enrichment-analysis-for-bacteria/reference/Ma_L5H_1_polished_original.gff3
@@ -56,7 +67,7 @@ done > running_map.sh
 sh running_map.sh
 ```
 
-## Step 3: FeatureCount
+## Step 3: Gene counts generation
 After running Step2, the raw reads were performed QC, aligment and sort. Finally generate *sort.bam file. This step use featureCounts to generate gene count table.
 ```
 gff_file=/research/groups/ma1grp/home/zyu/my_github/Enrichment-analysis-for-bacteria/reference/Ma_L5H_1_polished_original.gff3
