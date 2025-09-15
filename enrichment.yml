@@ -4,10 +4,12 @@ channels:
   - bioconda
   - defaults
 dependencies:
-  - bwa=0.7.17
-  - samtools=1.15.1
+  - bwa=0.7.19
+  - samtools=1.21
   - subread=2.0.6
   - fastp=0.19.6
   - sra-tools=3.2.1
   - eggnog-mapper=2.1.12
+  - r-ontologyindex=2.21
+  - clusterprofiler=4.14.0
 
