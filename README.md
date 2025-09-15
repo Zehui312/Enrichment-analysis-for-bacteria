@@ -13,8 +13,9 @@ conda env create -f enrichment.yml
 conda activate BacEnrich
 ```
 ## 2. Download example fastq files
-Here, we use 6 sequencing data as example, they are untreated and meropenem-treated and replicated 3 time.
+Here, we use 6 sequencing data as example, they are untreated and meropenem-treated and replicated 3 time. You can find the **meta_data.txt** in 
 ```
+meta_data=./Enrichment-analysis-for-bacteria/meta_data.txt
 cat ${meta_data} | while read line; do
     sample_name=$(echo $line | cut -f2 -d " ")
     srr_id=$(echo $line | cut -f1 -d " ")
@@ -81,7 +82,7 @@ sh running_map.sh
 ```
 
 ## Step 3: Gene counts generation
-After running Step2, the raw reads were performed QC, aligment and sort. Finally generate *sort.bam file. This step use featureCounts to generate gene count table.
+After running Step2, the raw reads were performed QC, aligment and sort. This step use featureCounts to generate gene count table.
 ```
 gff_file=./Enrichment-analysis-for-bacteria/reference/Ma_L5H_1_polished_original.gff3
 all_bam_files=$(ls *sorted.bam | tr '\n' ' ') # *sorted.bam from Step 2 output
@@ -105,3 +106,5 @@ Rscript ${enrichment_script}  \
 --go_obo_file ${go_obo_file}
 ```
 ## Step 5: Visualization
+
+![GSEA_lollipop](/images/GSEA_lollipop.jpg)
