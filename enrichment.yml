@@ -7,9 +7,10 @@ dependencies:
   - bwa=0.7.19
   - samtools=1.21
   - subread=2.0.6
-  - fastp=0.19.6
+  - fastp
   - sra-tools=3.2.1
   - eggnog-mapper=2.1.12
-  - r-ontologyindex=2.21
-  - clusterprofiler=4.14.0
+  - r-ontologyindex=2.12
+  - r-optparse
+  - bioconductor-clusterprofiler=4.14.0
 

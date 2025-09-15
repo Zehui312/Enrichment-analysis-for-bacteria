@@ -1,6 +1,14 @@
 # Bulk RNA-seq enrichment analysis for bacterial.
-This pipeline is a workflow for Bacteria Bulk RNA-seq enrichment analysis.
-
+This repository provides a bulk RNA-seq enrichment analysis pipeline for bacteria. All steps of the workflow are included in the shell script (**Workflow.sh**).
+- [Requirements](#Requirements)
+  -  [1. Installing software](#1.-Installing-software-using-conda)
+  -  [2. Download example fastq files](#2.-Download-example-fastq-files)
+- [Pipeline description](#pipeline-description)
+  -  [Step 1: Functional annotation of reference](#Step-1:-Functional-annotation-of-reference)
+  -  [Step 2: Raw reads processing](#step-2-raw-reads-processing)
+  -  [Step 3: Gene counts generation](#step-3-gene-counts-generation)
+  -  [Step 4: Enrichment analysis](#step-4-enrichment-analysis)
+  -  [Step 5: Visualization](#step-5-visualization)
 # Workflow
 
 # Requirements
@@ -89,7 +97,7 @@ all_bam_files=$(ls *sorted.bam | tr '\n' ' ') # *sorted.bam from Step 2 output
 featureCounts -p -d 10 -D 1000 -t CDS,ncRNA,tmRNA,tRNA,regulatory_region -g ID -a ${gff_file} -o feature.count -R BAM ${all_bam_files}  -T 4
 ```
 
-## Step 4: Enrichment
+## Step 4: Enrichment analysis
 The go.obo file can download from [Gene ontology](https://geneontology.org/docs/download-ontology/)
 
 ```
