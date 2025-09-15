@@ -1,10 +1,10 @@
 # Bulk RNA-seq enrichment analysis for bacterial.
-This repository provides a bulk RNA-seq enrichment analysis pipeline for bacteria. All steps of the workflow are included in the shell script (**Workflow.sh**).
+This repository provides a bulk RNA-seq enrichment analysis pipeline for bacteria. All steps of the workflow are included in the shell script (`./Workflow.sh`).
 - [Requirements](#Requirements)
   -  [1. Installing software](#1.-Installing-software-using-conda)
   -  [2. Download example fastq files](#2.-Download-example-fastq-files)
 - [Pipeline description](#pipeline-description)
-  -  [Step 1: Functional annotation of reference](#Step-1:-Functional-annotation-of-reference)
+  -  [Step 1: Functional annotation of reference](#step-1-functional-annotation-of-reference)
   -  [Step 2: Raw reads processing](#step-2-raw-reads-processing)
   -  [Step 3: Gene counts generation](#step-3-gene-counts-generation)
   -  [Step 4: Enrichment analysis](#step-4-enrichment-analysis)
@@ -37,7 +37,7 @@ Here you can find a detail steps description of workflow.
 Because that Klebsiella pneumoniae is non-model organism (not like Escherichia coli), it need to been annoted to get the Term to Gene table. Here we use  eggNOG-mapper to perform functional annotation. You can submit directly your .faa file into 
 http://eggnog-mapper.embl.de/ to get Term to Gene table. Sometimes the online website is unavailable. You can try functional annotation on local.
 
-### Step 1-1 #Download the eggNOG database
+### Step 1-1 Download the eggNOG database
 You can manually download the requirement databases and decompress files
 ```
 #Download 
