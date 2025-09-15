@@ -43,18 +43,19 @@ for f in ${EGGNOG_DATA_DIR}/*.tar; do
 done
 ```
 ### Step 1-2 Running eggNOG
-Running eggNOG would takes severa hours, you'd better backgroud running using nohup. **Ma_L5H_1_polished.faa** files, see here: `./reference/Ma_L5H_1_polished.faa `
+Running eggNOG would takes severa hours, you'd better backgroud running using nohup. 
+**Ma_L5H_1_polished.faa** files, see here: `./reference/Ma_L5H_1_polished.faa `
 ```
 faa_file=./Enrichment-analysis-for-bacteria/reference/Ma_L5H_1_polished.faa
 emapper.py -i ${faa_file} -o Ma_L5H --tax_scope Bacteria --excel
 ```
 If you want set other parameter, you can refer [eggNOG-mapper wiki](https://github.com/eggnogdb/eggnog-mapper/wiki/eggNOG-mapper-v2.1.5-to-v2.1.13#user-content-Software_Requirements).
 ## Step 2: Raw reads processing
-```./script/mapping_bulk_paired.sh``` can achieve Raw data QC and Alignment. You can just simplely run below script.
-**mapping_shell** : `./reference/mapping_bulk_paired.sh `
-**gff_file** and **fna_file**: `./reference/Ma_L5H_1_polished_original.gff3 ` and `./reference/Ma_L5H_1_polished.fna`
-**raw_reas_path**: The path you download example fastq files
-**metadata**: `./meta_data.txt`
+```./script/mapping_bulk_paired.sh``` can achieve Raw data QC and Alignment. You can just simplely run below script. 
+- **mapping_shell** : `./reference/mapping_bulk_paired.sh `
+- **gff_file** and **fna_file**: `./reference/Ma_L5H_1_polished_original.gff3 ` and `./reference/Ma_L5H_1_polished.fna`
+- **raw_reas_path**: The path you download example fastq files
+- **metadata**: `./meta_data.txt`
 
 
 ```
@@ -83,7 +84,7 @@ sh running_map.sh
 After running Step2, the raw reads were performed QC, aligment and sort. Finally generate *sort.bam file. This step use featureCounts to generate gene count table.
 ```
 gff_file=./Enrichment-analysis-for-bacteria/reference/Ma_L5H_1_polished_original.gff3
-all_bam_files=$(ls *sorted.bam | tr '\n' ' ') 
+all_bam_files=$(ls *sorted.bam | tr '\n' ' ') # *sorted.bam from Step 2 output
 featureCounts -p -d 10 -D 1000 -t CDS,ncRNA,tmRNA,tRNA,regulatory_region -g ID -a ${gff_file} -o feature.count -R BAM ${all_bam_files}  -T 4
 ```
 
@@ -92,7 +93,7 @@ The go.obo file can download from [Gene ontology](https://geneontology.org/docs/
 
 ```
 #you need to edit script and paths to your own path
-enrichment_script=./enrichment_run/4_enrichment/GSEA_enrichment.R # path to GSEA_enrichment script ()
+enrichment_script=./enrichment_run/4_enrichment/GSEA_enrichment.R # path to GSEA_enrichment script (from ./reference/GSEA_enrichment.R)
 count_table_file=${output_path}/3_featureCount/gene.count # path to count table file (from Step 3 output) 
 annotations_file=${output_path}/1_functional_annotation/Ma_L5H.emapper.annotations.xlsx # path to functional annotation file (from Step 1 output)
 go_obo_file=./Enrichment-analysis-for-bacteria/reference/go.obo  # path to go.obo file
