@@ -11,7 +11,7 @@ This repository provides a bulk RNA-seq enrichment analysis pipeline for bacteri
   -  [Step 5: Visualization](#step-5-visualization)
 # Workflow
 The schematic of our workflow is demonstrated below.
-<img src="/images/Workflow.png" alt="Workflow" width="600"/>
+<img src="/images/Workflow.png" alt="Workflow" width="300"/>
 
 # Requirements
 ## 1. Installing software using conda
