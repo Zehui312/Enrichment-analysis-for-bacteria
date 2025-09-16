@@ -16,7 +16,7 @@ The schematic of our workflow is demonstrated below.
 
 # Requirements
 ## 1. Installing software using conda
-The required software and packages can be easily installed using Conda. 
+The required software and packages can be easily installed using [Conda](https://www.anaconda.com/docs/getting-started/miniconda/install). 
 ```
 git clone https://github.com/Zehui312/Enrichment-analysis-for-bacteria.git
 cd Enrichment-analysis-for-bacteria

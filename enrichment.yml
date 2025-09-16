@@ -5,12 +5,15 @@ channels:
   - defaults
 dependencies:
   - bwa=0.7.19
-  - samtools=1.21
-  - subread=2.0.6
-  - fastp
+  - samtools=1.22
+  - subread=2.1.1
+  - fastp=0.24.0
   - sra-tools=3.2.1
   - eggnog-mapper=2.1.12
+  - r-base=4.4.2
   - r-ontologyindex=2.12
-  - r-optparse
+  - r-optparse=1.7.5
   - bioconductor-clusterprofiler=4.14.0
+  - bioconductor-deseq2=1.46.0
+
 
