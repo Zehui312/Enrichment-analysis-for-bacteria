@@ -107,7 +107,7 @@ go_obo_file=./Enrichment-analysis-for-bacteria/reference/go.obo  # path to go.ob
 Rscript ${enrichment_script}  --count_table_file ${count_table_file}  --metadata_file ${meta_data}  --annotations_file ${annotations_file}  --go_obo_file ${go_obo_file}
 ```
 ## Step 5: Visualization
-Finally, run Visualization.R to generate a lollipop plot. You can use the --topnum parameter to specify the number of top genes to display.
+Finally, run `./script/Visualization.R` to generate a lollipop plot. You can use the --topnum parameter to specify the number of top genes to display.
 ```
 Visualization_script=${output_path}/Enrichment-analysis-for-bacteria/script/Visualization.R
 gsea_result_path=${output_path}/4_enrichment/GSEA_result.csv
