@@ -64,12 +64,6 @@ emapper.py -i ${faa_file} -o Ma_L5H --tax_scope Bacteria --excel
 If you want to set additional parameters, please refer to the [eggNOG-mapper wiki](https://github.com/eggnogdb/eggnog-mapper/wiki/eggNOG-mapper-v2.1.5-to-v2.1.13#user-content-Software_Requirements).
 
 ## Step 2: Raw reads processing
-```./script/mapping_bulk_paired.sh``` can achieve Raw data QC and Alignment. You can just simplely run below script. 
-- **mapping_shell** : `./reference/mapping_bulk_paired.sh `
-- **gff_file** and **fna_file**: `./reference/Ma_L5H_1_polished_original.gff3 ` and `./reference/Ma_L5H_1_polished.fna`
-- **raw_reas_path**: The path you download example fastq files
-- **metadata**: `./meta_data.txt`
-
 
 ```
 # bash
