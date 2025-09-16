@@ -1,4 +1,4 @@
-# Bulk RNA-seq enrichment analysis for bacterial.
+# Bulk RNA-seq enrichment analysis pipeline for bacterial.
 This repository provides a bulk RNA-seq enrichment analysis pipeline for bacteria. All steps of the workflow are included in the shell script (`./Workflow.sh`).
 - [Requirements](#Requirements)
   -  [1. Installing software](#1.-Installing-software-using-conda)
