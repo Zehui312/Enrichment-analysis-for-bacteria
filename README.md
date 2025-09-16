@@ -111,7 +111,7 @@ annotations_file=${output_path}/1_functional_annotation/Ma_L5H.emapper.annotatio
 go_obo_file=./Enrichment-analysis-for-bacteria/reference/go.obo  # path to go.obo file
 
 Rscript ${enrichment_script}  --count_table_file ${count_table_file}  --metadata_file ${meta_data}  --annotations_file ${annotations_file}  --go_obo_file ${go_obo_file}
-
+```
 ## Step 5: Visualization
 Finally, run Visualization.R to generate a lollipop plot. You can use the --topnum parameter to specify the number of top genes to display.
 ```
