@@ -18,16 +18,17 @@ option_list <- list(
 opt_parser <- OptionParser(option_list = option_list)
 opt <- parse_args(opt_parser)
 
-gsea_result_path <- opt$input
+gsea_path <- opt$gsea_result_path
 top_num <- opt$topnum
 
-
+print(paste("Using GSEA result file:", gsea_path))
+print(paste("Number of top and bottom NES to plot:", top_num))
 
 #=================================================================
 #+++++++++++++++++++++++Visualization ++++++++++++++++++++++++++++
 #=================================================================
 
-gsea_result <- read.csv(file = gsea_result_path,row.names = 1)
+gsea_result <- read.csv(file = gsea_path,row.names = 1)
 GSEA_df <- arrange(gsea_result, desc(NES))
 GSEA_topN <- rbind(GSEA_df[1:top_num,], GSEA_df[(nrow(GSEA_df)-top_num + 1):nrow(GSEA_df),])
 
