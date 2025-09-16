@@ -88,7 +88,7 @@ sh running_map.sh
 ```
 
 ## Step 3: Gene counts generation
-After Step 2, the raw reads are processed for quality control, alignment, and sorting. In this step, featureCounts is used to generate the gene count table.
+In this step, featureCounts is used to generate the gene count table.
 ```
 gff_file=./Enrichment-analysis-for-bacteria/reference/Ma_L5H_1_polished_original.gff3
 all_bam_files=$(ls *sorted.bam | tr '\n' ' ') # *sorted.bam from Step 2 output
@@ -96,7 +96,7 @@ featureCounts -p -d 10 -D 1000 -t CDS,ncRNA,tmRNA,tRNA,regulatory_region -g ID -
 ```
 
 ## Step 4: Enrichment analysis
-The **gene.count** from Step 3 is used as input for differential gene expression and GSEA enrichment analysis. The latest **go.**obo file can be downloaded from [Gene ontology](https://geneontology.org/docs/download-ontology/), or or you can use the copy provided in `./reference/go.obo`
+```./script/GSEA_enrichment.R```  performs GSEA enrichment analysis. The latest **go.**obo file can be downloaded from [Gene ontology](https://geneontology.org/docs/download-ontology/), or or you can use the copy provided in `./reference/go.obo`
 
 ```
 enrichment_script=./enrichment_run/4_enrichment/GSEA_enrichment.R # path to GSEA_enrichment script (from ./reference/GSEA_enrichment.R)
