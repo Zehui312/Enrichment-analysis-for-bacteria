@@ -24,7 +24,7 @@ conda env create -f enrichment.yml
 conda activate BacEnrich
 ```
 ## 2. Download example fastq files
-Here, we use 6 sequencing data as example, they are untreated and meropenem-treated and replicated 3 time. You can find the **meta_data.txt** in 
+Here, we use six sequencing datasets as an example, including untreated and meropenem-treated samples, each with three replicates. **meta_data.txt** is available at `./meta_data.txt`
 ```
 meta_data=./Enrichment-analysis-for-bacteria/meta_data.txt
 cat ${meta_data} | while read line; do
@@ -35,33 +35,34 @@ done > download_data.sh
 sh download_data.sh
 ```
 # Pipeline description
-Here you can find a detail steps description of workflow.
+A detailed description of the workflow is provided below. The step-by-step implementation can be found in `./Workflow.sh`.
 ## Step 1: Functional annotation of reference
-Because that Klebsiella pneumoniae is non-model organism (not like Escherichia coli), it need to been annoted to get the Term to Gene table. Here we use  eggNOG-mapper to perform functional annotation. You can submit directly your .faa file into 
-http://eggnog-mapper.embl.de/ to get Term to Gene table. Sometimes the online website is unavailable. You can try functional annotation on local.
+Because Klebsiella pneumoniae is a non-model organism (unlike Escherichia coli), it needs to be annotated to generate a Term-to-Gene table. Here, we use eggNOG-mapper for functional annotation. You can directly submit your .faa file to [eggNOG-online](http://eggnog-mapper.embl.de/). Since the online server may occasionally be unavailable, you can also perform the functional annotation locally:
 
 ### Step 1-1 Download the eggNOG database
-You can manually download the requirement databases and decompress files
+You can manually download the required databases and decompress the files.
 ```
 #Download 
-export EGGNOG_DATA_DIR=./enrichment_run/1_functional_annotation/database
-lftp -c "open http://eggnog6.embl.de; mirror --continue --parallel=4 /download/emapperdb-5.0.2 $EGGNOG_DATA_DIR"
+EGGNOG_DATA_DIR=${output_path}/1_functional_annotation/database/emapperdb-5.0.2 
+mkdir -p $EGGNOG_DATA_DIR
+wget -r -np -nH --cut-dirs=1 -c -P $EGGNOG_DATA_DIR http://eggnog6.embl.de/download/emapperdb-5.0.2/
 
 #Decompress files
-gunzip ${EGGNOG_DATA_DIR}/*.gz
-for f in ${EGGNOG_DATA_DIR}/*.tar; do
+cd $EGGNOG_DATA_DIR/emapperdb-5.0.2/
+gunzip *.gz
+for f in *.tar; do
     echo "Extracting $f ..."
     tar -xf "$f" -C ${EGGNOG_DATA_DIR}
 done
 ```
 ### Step 1-2 Running eggNOG
-Running eggNOG would takes severa hours, you'd better backgroud running using nohup. 
-**Ma_L5H_1_polished.faa** files, see here: `./reference/Ma_L5H_1_polished.faa `
+Running eggNOG may take several hours, so it is recommended to run it in the background using **nohup**.
 ```
 faa_file=./Enrichment-analysis-for-bacteria/reference/Ma_L5H_1_polished.faa
 emapper.py -i ${faa_file} -o Ma_L5H --tax_scope Bacteria --excel
 ```
-If you want set other parameter, you can refer [eggNOG-mapper wiki](https://github.com/eggnogdb/eggnog-mapper/wiki/eggNOG-mapper-v2.1.5-to-v2.1.13#user-content-Software_Requirements).
+If you want to set additional parameters, please refer to the [eggNOG-mapper wiki](https://github.com/eggnogdb/eggnog-mapper/wiki/eggNOG-mapper-v2.1.5-to-v2.1.13#user-content-Software_Requirements).
+
 ## Step 2: Raw reads processing
 ```./script/mapping_bulk_paired.sh``` can achieve Raw data QC and Alignment. You can just simplely run below script. 
 - **mapping_shell** : `./reference/mapping_bulk_paired.sh `
@@ -93,7 +94,7 @@ sh running_map.sh
 ```
 
 ## Step 3: Gene counts generation
-After running Step2, the raw reads were performed QC, aligment and sort. This step use featureCounts to generate gene count table.
+After Step 2, the raw reads are processed for quality control, alignment, and sorting. In this step, featureCounts is used to generate the gene count table.
 ```
 gff_file=./Enrichment-analysis-for-bacteria/reference/Ma_L5H_1_polished_original.gff3
 all_bam_files=$(ls *sorted.bam | tr '\n' ' ') # *sorted.bam from Step 2 output
@@ -101,21 +102,23 @@ featureCounts -p -d 10 -D 1000 -t CDS,ncRNA,tmRNA,tRNA,regulatory_region -g ID -
 ```
 
 ## Step 4: Enrichment analysis
-The go.obo file can download from [Gene ontology](https://geneontology.org/docs/download-ontology/)
+The **gene.count** from Step 3 is used as input for differential gene expression and GSEA enrichment analysis. The latest **go.**obo file can be downloaded from [Gene ontology](https://geneontology.org/docs/download-ontology/), or or you can use the copy provided in `./reference/go.obo`
 
 ```
-#you need to edit script and paths to your own path
 enrichment_script=./enrichment_run/4_enrichment/GSEA_enrichment.R # path to GSEA_enrichment script (from ./reference/GSEA_enrichment.R)
 count_table_file=${output_path}/3_featureCount/gene.count # path to count table file (from Step 3 output) 
 annotations_file=${output_path}/1_functional_annotation/Ma_L5H.emapper.annotations.xlsx # path to functional annotation file (from Step 1 output)
 go_obo_file=./Enrichment-analysis-for-bacteria/reference/go.obo  # path to go.obo file
 
-Rscript ${enrichment_script}  \
---count_table_file ${count_table_file}  \
---metadata_file ${meta_data}  \
---annotations_file ${annotations_file}  \
---go_obo_file ${go_obo_file}
-```
-## Step 5: Visualization
+Rscript ${enrichment_script}  --count_table_file ${count_table_file}  --metadata_file ${meta_data}  --annotations_file ${annotations_file}  --go_obo_file ${go_obo_file}
 
+## Step 5: Visualization
+Finally, run Visualization.R to generate a lollipop plot. You can use the --topnum parameter to specify the number of top genes to display.
+```
+Visualization_script=${output_path}/Enrichment-analysis-for-bacteria/script/Visualization.R
+gsea_result_path=${output_path}/4_enrichment/GSEA_result.csv
+top_num=5
+Rscript ${Visualization_script} --gsea_result_path ${gsea_result_path} --topnum ${top_num}
+
+```
 ![GSEA_lollipop](/images/GSEA_lollipop.jpg)

@@ -36,13 +36,13 @@ sh running_download.sh
 mkdir -p ${output_path}/1_functional_annotation
 cd ${output_path}/1_functional_annotation
 
-#Step 1-1 Download the eggNOG database
-mkdir -p $EGGNOG_DATA_DIR
+#Step 1-1 Download the eggNOG database and decompress the files
 EGGNOG_DATA_DIR=${output_path}/1_functional_annotation/database/emapperdb-5.0.2 
+mkdir -p $EGGNOG_DATA_DIR
+wget -r -np -nH --cut-dirs=1 -c -P $EGGNOG_DATA_DIR http://eggnog6.embl.de/download/emapperdb-5.0.2/
 
-
-bsub -P download -J download -n 16 -R "rusage[mem=4GB]" -eo download.err -oo download.out "
-wget -r -np -nH --cut-dirs=1 -c -P $EGGNOG_DATA_DIR http://eggnog6.embl.de/download/emapperdb-5.0.2/"
+# bsub -P download -J download -n 16 -R "rusage[mem=4GB]" -eo download.err -oo download.out "
+# wget -r -np -nH --cut-dirs=1 -c -P $EGGNOG_DATA_DIR http://eggnog6.embl.de/download/emapperdb-5.0.2/"
 # -r → recursive download
 # -np → no parent (don’t go above /download/emapperdb-5.0.2/)
 # -nH → no host directory (don’t create eggnog6.embl.de/)
