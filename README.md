@@ -64,9 +64,9 @@ emapper.py -i ${faa_file} -o Ma_L5H --tax_scope Bacteria --excel
 If you want to set additional parameters, please refer to the [eggNOG-mapper wiki](https://github.com/eggnogdb/eggnog-mapper/wiki/eggNOG-mapper-v2.1.5-to-v2.1.13#user-content-Software_Requirements).
 
 ## Step 2: Raw reads processing
+```./script/mapping_bulk_paired.sh``` can achieve Raw data QC and Alignment. You can just simplely run below script. 
 
 ```
-# bash
 # you need to edit script and paths to your own path
 mapping_shell=./Enrichment-analysis-for-bacteria/script/mapping_bulk_paired.sh
 gff_file=./Enrichment-analysis-for-bacteria/reference/Ma_L5H_1_polished_original.gff3
