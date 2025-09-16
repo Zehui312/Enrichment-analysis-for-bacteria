@@ -72,7 +72,7 @@ emapper.py -i ${faa_file} -o Ma_L5H --tax_scope Bacteria --excel
 
 
 #=================================================================
-#+++++++++++++++++++++++Step 2 raw mapping +++++++++++++++++++++++
+#+++++++++++++++++++++++Step 2 Raw reads processing ++++++++++++++
 #=================================================================
 # bash
 mkdir -p ${output_path}/2_mapping
@@ -98,7 +98,7 @@ sh running_map.sh
 # done < running_map.sh
 
 #=================================================================
-#+++++++++++++++++++++++Step 3 featureCount +++++++++++++++++++++++
+#+++++++++++++++++++++++Step 3 Gene counts generation ++++++++++++
 #=================================================================
 mkdir -p ${output_path}/3_featureCount
 cd ${output_path}/3_featureCount
@@ -113,7 +113,7 @@ featureCounts -p -d 10 -D 1000 -t CDS,ncRNA,tmRNA,tRNA,regulatory_region -g ID -
 # "
 
 #=================================================================
-#+++++++++++++++++++++++Step 4 Enrichment +++++++++++++++++++++++
+#+++++++++++++++++++++++Step 4 Enrichment analysis +++++++++++++++
 #=================================================================
 mkdir -p ${output_path}/4_enrichment
 cd ${output_path}/4_enrichment
