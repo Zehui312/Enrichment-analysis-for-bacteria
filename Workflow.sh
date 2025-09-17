@@ -1,7 +1,6 @@
 # !/bin/bash
-# Change to your own output path and github path
+# Change to your own output path
 output_path=/research/groups/ma1grp/home/zyu/run_enrichment
-enrichment_path=/research/groups/ma1grp/home/zyu/my_github/Enrichment-analysis-for-bacteria
 cd ${output_path}
 
 #=================================================================
@@ -20,7 +19,7 @@ conda activate BacEnrich
 mkdir -p ${output_path}/0_data
 cd ${output_path}/0_data
 
-meta_data=${enrichment_path}/meta_data.txt
+meta_data=${output_path}/Enrichment-analysis-for-bacteria/meta_data.txt
 cat ${meta_data} | while read line; do
     sample_name=$(echo $line | cut -f2 -d " ")
     srr_id=$(echo $line | cut -f1 -d " ")
@@ -64,7 +63,7 @@ done
 cd ${output_path}/1_functional_annotation
 
 export EGGNOG_DATA_DIR=${output_path}/1_functional_annotation/database/emapperdb-5.0.2
-faa_file=${enrichment_path}/reference/Ma_L5H_1_polished.faa
+faa_file=${output_path}/Enrichment-analysis-for-bacteria/reference/Ma_L5H_1_polished.faa
 
 #you'd better backgroud running using nohup
 # nohup emapper.py -i ${faa_file} -o Ma_L5H --tax_scope Bacteria --excel &
@@ -82,9 +81,9 @@ mkdir -p ${output_path}/2_mapping
 cd ${output_path}/2_mapping
 
 raw_reas_path=${output_path}/0_data
-fna_file=${enrichment_path}/reference/Ma_L5H_1_polished.fna
-metadata=${enrichment_path}/meta_data.txt
-mapping_shell=${enrichment_path}/script/mapping_bulk_paired.sh
+fna_file=${output_path}/Enrichment-analysis-for-bacteria/reference/Ma_L5H_1_polished.fna
+metadata=${output_path}/Enrichment-analysis-for-bacteria/meta_data.txt
+mapping_shell=${output_path}/Enrichment-analysis-for-bacteria/script/mapping_bulk_paired.sh
 
 cat ${metadata} | while read line; do
     ssr_id=$(echo $line | cut -f1 -d " ")
@@ -107,7 +106,7 @@ mkdir -p ${output_path}/3_featureCount
 cd ${output_path}/3_featureCount
 
 ln -s ${output_path}/2_mapping/*sorted.bam ./
-gff_file=${enrichment_path}/reference/Ma_L5H_1_polished_original.gff3
+gff_file=${output_path}/Enrichment-analysis-for-bacteria/reference/Ma_L5H_1_polished_original.gff3
 all_bam_files=$(ls *sorted.bam | tr '\n' ' ') 
 featureCounts -p -d 10 -D 1000 -t CDS,ncRNA,tmRNA,tRNA,regulatory_region -g ID -a ${gff_file} -o gene.count -R BAM ${all_bam_files}  -T 4
 
@@ -122,12 +121,12 @@ mkdir -p ${output_path}/4_enrichment
 cd ${output_path}/4_enrichment
 
 
-enrichment_script=${enrichment_path}/script/GSEA_enrichment.R # path to GSEA_enrichment script ()
+enrichment_script=${output_path}/Enrichment-analysis-for-bacteria/script/GSEA_enrichment.R # path to GSEA_enrichment script ()
 count_table_file=${output_path}/3_featureCount/gene.count # path to count table file (from Step 3 output) 
 annotations_file=${output_path}/1_functional_annotation/Ma_L5H.emapper.annotations.xlsx # path to functional annotation file (from Step 1 output)
 # annotations_file=/research/groups/ma1grp/home/zyu/my_github/enrichment_run/1_functional_annotation/Ma_L5H.emapper.annotations.xlsx
-go_obo_file=${enrichment_path}/reference/go.obo  # path to go.obo file
-meta_data=${enrichment_path}/meta_data.txt # path to metadata file
+go_obo_file=${output_path}/Enrichment-analysis-for-bacteria/reference/go.obo  # path to go.obo file
+meta_data=${output_path}/Enrichment-analysis-for-bacteria/meta_data.txt # path to metadata file
 Rscript ${enrichment_script}  --count_table_file ${count_table_file}  --metadata_file ${meta_data}  --annotations_file ${annotations_file}  --go_obo_file ${go_obo_file}
 
 #=================================================================
@@ -136,7 +135,7 @@ Rscript ${enrichment_script}  --count_table_file ${count_table_file}  --metadata
 mkdir -p ${output_path}/5_visualization
 cd ${output_path}/5_visualization
 
-Visualization_script=${enrichment_path}/script/Visualization.R
+Visualization_script=${output_path}/Enrichment-analysis-for-bacteria/script/Visualization.R
 gsea_result_path=${output_path}/4_enrichment/GSEA_result.csv
 
 top_num=5
