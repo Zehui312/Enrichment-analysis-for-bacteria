@@ -6,7 +6,7 @@ cd ${output_path}
 #=================================================================
 #+++++++++++++++++++++++ Requirements 1 ++++++++++++++++++++++++++
 #=================================================================
-
+# Installation of the BacEnrich environment
 git clone https://github.com/Zehui312/Enrichment-analysis-for-bacteria.git
 cd Enrichment-analysis-for-bacteria
 mamba env create -f enrichment.yml
@@ -16,6 +16,7 @@ conda activate BacEnrich
 #=================================================================
 #+++++++++++++++++++++++ Requirements 2 ++++++++++++++++++++++++++
 #=================================================================
+# Download raw data
 mkdir -p ${output_path}/0_data
 cd ${output_path}/0_data
 
@@ -39,32 +40,20 @@ mkdir -p ${output_path}/1_functional_annotation
 cd ${output_path}/1_functional_annotation
 
 #Step 1-1 Download the eggNOG database and decompress the files
-EGGNOG_DATA_DIR=${output_path}/1_functional_annotation/database/emapperdb-5.0.2 
-mkdir -p $EGGNOG_DATA_DIR
-wget -r -np -nH --cut-dirs=1 -c -P $EGGNOG_DATA_DIR http://eggnog6.embl.de/download/emapperdb-5.0.2/
 
-# bsub -P download -J download -n 16 -R "rusage[mem=4GB]" -eo download.err -oo download.out "
-# wget -r -np -nH --cut-dirs=1 -c -P $EGGNOG_DATA_DIR http://eggnog6.embl.de/download/emapperdb-5.0.2/"
-# -r → recursive download
-# -np → no parent (don’t go above /download/emapperdb-5.0.2/)
-# -nH → no host directory (don’t create eggnog6.embl.de/)
-# --cut-dirs=1 → removes the first directory (download/) so you only get emapperdb-5.0.2/
-# -c → continue partial downloads (like --continue in lftp)
-# -P $EGGNOG_DATA_DIR → download into your chosen folder
-
-cd $EGGNOG_DATA_DIR/emapperdb-5.0.2/
+wget -r -np -nH --cut-dirs=1 -c -P ${output_path}/1_functional_annotation/ http://eggnog6.embl.de/download/emapperdb-5.0.2/
+cd ${output_path}/1_functional_annotation/emapperdb-5.0.2/
 gunzip *.gz
 for f in *.tar; do
     echo "Extracting $f ..."
-    tar -xf "$f" -C ${EGGNOG_DATA_DIR}
+    tar -xf "$f" -C .
 done
 
 #Step 1-2 Running eggNOG
 cd ${output_path}/1_functional_annotation
 
-export EGGNOG_DATA_DIR=${output_path}/1_functional_annotation/database/emapperdb-5.0.2
+export EGGNOG_DATA_DIR=$EGGNOG_DATA_DIR/emapperdb-5.0.2/
 faa_file=${output_path}/Enrichment-analysis-for-bacteria/reference/Ma_L5H_1_polished.faa
-
 #you'd better backgroud running using nohup
 # nohup emapper.py -i ${faa_file} -o Ma_L5H --tax_scope Bacteria --excel &
 emapper.py -i ${faa_file} -o Ma_L5H --tax_scope Bacteria --excel
